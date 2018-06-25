@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Sender</string>
+    <string name="text_input">Enter Package name</string>
+</resources>
