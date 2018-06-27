@@ -3,6 +3,7 @@ package ir.mehrdadscomputer.sender;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,10 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String packageNameString;
-
         mEditText = findViewById(R.id.editTextInput);
-        packageNameString = mEditText.getText().toString();
         mButtonSend = findViewById(R.id.buttonSend);
         mButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, mEditText.getText().toString());
+                Log.i("ttt5", mEditText.getText().toString());
                 sendIntent.setType("text/plain");
                 startActivityForResult(sendIntent, REQUEST_CODE);
             }
