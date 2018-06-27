@@ -13,6 +13,10 @@ public class MainActivity extends AppCompatActivity {
 
     Button mButtonSend;
     EditText mEditText;
+    Button mButtonSendReceiver;
+
+    // This is the custom intent-filter action value.
+    public static final String CUSTOM_BROADCAST_ACTION = "ir.mehrdadscomputer.broadcast.CUSTOM_BROADCAST";
 
     public static final int REQUEST_CODE = 12;
 
@@ -34,13 +38,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(sendIntent, REQUEST_CODE);
             }
         });
+        mButtonSendReceiver = findViewById(R.id.buttonSendReceiver);
+        mButtonSendReceiver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Send a normal broadcast when being clicked.
+                Intent intent = new Intent(CUSTOM_BROADCAST_ACTION);
+                sendBroadcast(intent);
+            }
+        });
     }
 
     // Call Back method  to get the Message form other Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && resultCode  == RESULT_OK) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             String message = data.getStringExtra("MESSAGE");
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
