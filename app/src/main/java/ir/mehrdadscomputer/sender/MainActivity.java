@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     Button mButtonSendReceiver;
 
     // This is the custom intent-filter action value.
-    public static final String CUSTOM_BROADCAST_ACTION = "ir.mehrdadscomputer.broadcast.CUSTOM_BROADCAST";
+    public static final String CUSTOM_BROADCAST_ACTION = "test";
 
     public static final int REQUEST_CODE = 12;
 
@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Send a normal broadcast when being clicked.
                 Intent intent = new Intent(CUSTOM_BROADCAST_ACTION);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
                 sendBroadcast(intent);
+                Toast.makeText(MainActivity.this, "onClick: sender", Toast.LENGTH_SHORT).show();
             }
         });
     }
