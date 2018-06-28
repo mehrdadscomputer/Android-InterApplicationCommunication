@@ -1,6 +1,9 @@
 package ir.mehrdadscomputer.sender;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String CUSTOM_BROADCAST_ACTION = "test";
 
     public static final int REQUEST_CODE = 12;
+
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +50,28 @@ public class MainActivity extends AppCompatActivity {
                 // Send a normal broadcast when being clicked.
                 Intent intent = new Intent(CUSTOM_BROADCAST_ACTION);
                 intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setPackage("ir.mehrdadscomputer.receiver");
+                intent.putExtra("receiverTestValue", mEditText.getText().toString());
                 sendBroadcast(intent);
-                Toast.makeText(MainActivity.this, "onClick: sender", Toast.LENGTH_SHORT).show();
             }
         });
+
+        try {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction("customreceiveraction");
+            broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String sharedText = intent.getStringExtra("message");
+                    Toast.makeText(context, "Is the packageName in the list?" + sharedText , Toast.LENGTH_SHORT).show();
+                }
+            };
+            registerReceiver(broadcastReceiver, intentFilter);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     // Call Back method  to get the Message form other Activity
@@ -59,5 +82,12 @@ public class MainActivity extends AppCompatActivity {
             String message = data.getStringExtra("MESSAGE");
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onStop() {
+// TODO Auto-generated method stub
+        unregisterReceiver(broadcastReceiver);
+        super.onStop();
     }
 }
